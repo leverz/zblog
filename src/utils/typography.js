@@ -1,4 +1,5 @@
 import Typography from 'typography'
+import CodePlugin from 'typography-plugin-code'
 import SternGroveTheme from 'typography-theme-stern-grove'
 
 SternGroveTheme.overrideThemeStyles = () => {
@@ -8,6 +9,10 @@ SternGroveTheme.overrideThemeStyles = () => {
     },
   }
 }
+
+SternGroveTheme.plugins = [
+  new CodePlugin(),
+]
 
 const typography = new Typography(SternGroveTheme)
 
