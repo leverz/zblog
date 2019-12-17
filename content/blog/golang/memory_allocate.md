@@ -54,13 +54,13 @@ newobject 是用来申请内存和代理 mallocgc 的一个内置函数，malloc
 
 对于小于 32KB 的内存申请，Go 将尝试从一个叫 mcache 的本地缓存中获取内存空间。这个缓存维护着一堆 span(32KB 的内存块) 列表，称为 mspan，它包含可用于分配的内存。
 
-![图片](https://uploader.shimo.im/f/MLvb4f1xrW4gF6jU.png!thumbnail)
+![图片](./gmelloc01.png)
 
 每个线程 M 会分配给一个处理器 P，并且每次最多处理一个 goroutine。在分配内存时，当前的 goroutine 会使用当前 p 的本地缓存来查找 span 列表中第一个可用的空闲对象。使用本地缓存不需要加锁，并且可以使分配更有效。
 
 span 列表被划分成 67 个大小种类，从 0 B 到 32 KB，可以存储不同的对象大小：
 
-![图片](https://uploader.shimo.im/f/Anvdvee3AHoXN9Ga.png!thumbnail)
+![图片](./gmelloc02.png)
 
 （补充：可以查看 runtime 下的 sizeclasses.go 文件，其中定义了对 span 大小的划分）
 
@@ -68,37 +68,37 @@ span 列表被划分成 67 个大小种类，从 0 B 到 32 KB，可以存储不
 
 在前面的例子中，结构体的大小是 32 字节，可以放入大小为 32 字节的 span 中：
 
-![图片](https://uploader.shimo.im/f/8aWYNMK6hx4A3roE.png!thumbnail)
+![图片](./gmelloc03.png)
 
 现在我们可能想知道，如果在内存分配期间，没有足够的空间会发生什么？Go 为每种大小的 span 都维护了一个控制列表，叫做 mcentral。每个 mcentral 会维护两个列表：空闲 span 列表和非空闲列表。
 
-![图片](https://uploader.shimo.im/f/5ZFp933ScBYdi0Vy.png!thumbnail)
+![图片](./gmelloc04.png)
 
 mcentral 把 span 维护在一个双向链表中。每个 span 都有对上一个和下一个 span 的引用。一个在非空链表中的 span （意味着至少有一个空闲的插槽可以被分配）可能已经包含了一些正在使用的内存。实际上，当垃圾回收器清理内存时，它可以清理掉标记为不再使用的部分，并将其放回非空列表中。同样的，不包含可分配内存的 span 放在 empty 链表中，而一个 span 被填满之后，也会从 non-empty 移入到 empty 中。
 
 我们的程序可以在插槽使用完时，想 mcentral 申请一个 span：
 
-![图片](https://uploader.shimo.im/f/UQP3DNfTIe4bqXCn.png!thumbnail)
+![图片](./gmelloc05.png)
 
 当 mcentral 中没有可供分配的 span 时，就需要堆中申请新的 span 到 mcentral 中。
 
-![图片](https://uploader.shimo.im/f/yfn6tbcZgvIzxIRh.png!thumbnail)
+![图片](./gmelloc06.png)
 
 而堆会在需要时，从操作系统申请内存。如果需要特别多的内存，堆将会分配一块儿特别大的内存，称为 arena，这个大小在 64 位架构中是 64 MB，在其他架构中是 4MB。arena 也会将内存页映射为 span：
 
-![图片](https://uploader.shimo.im/f/KsXqr6isV3AbzKc2.png!thumbnail)
+![图片](./gmelloc07.png)
 
 ## 大额内存申请
 
 Go 不适用本地缓存分配大额内存申请。这些大于 32 KB 的申请将被舍入到内存页的大小并直接分配给堆。
 
-![图片](https://uploader.shimo.im/f/wYUuCBy6XBEmpR3z.png!thumbnail)
+![图片](./gmelloc08.png)
 
 ## 全局视角
 
 现在我们可以站在更高的角度看内存分配的全貌了，我们把所有组件组合到一起，得到了下图：
 
-![图片](https://uploader.shimo.im/f/fmua9BQx9Pkf2Ukr.png!thumbnail)
+![图片](./gmelloc09.png)
 
 ## 灵感
 
