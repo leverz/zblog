@@ -14,6 +14,7 @@
 |297|[二叉树的序列化与反序列化](https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/)  | [Golang](./content/blog/algorithm/297.md)|
 |99|[恢复二叉搜索树](https://leetcode-cn.com/problems/recover-binary-search-tree/)| [Golang](./content/blog/algorithm/99.md)|
 |35|[搜索插入位置](https://leetcode-cn.com/problems/search-insert-position/)| [Golang](./content/blog/algorithm/35.md)|
+|22|[括号生成](https://leetcode-cn.com/problems/generate-parentheses/)| [Golang](./content/blog/algorithm/22.md)|
 |21|[合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)| [Golang](./content/blog/algorithm/21.md)|
 |20|[有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)| [Golang](./content/blog/algorithm/20.md)|
 |19|[删除链表的倒数第N个节点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)| [Golang](./content/blog/algorithm/19.md)|
