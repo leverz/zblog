@@ -101,7 +101,9 @@
 
 ## MQ
 [kafka 消费模型要点](./content/blog/mq/kafka_consumer.md)
+
 [Kafka 和 RocketMQ 如何进行消息复制](./content/blog/mq/replication.md)
+
 [RocketMQ 的 NameServer](./content/blog/mq/nameserver.md)
 
 
