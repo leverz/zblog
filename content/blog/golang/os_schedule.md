@@ -1,5 +1,5 @@
 ---
-title: 「译」Scheduling In Go : Part I - OS Scheduler
+title: 「译」Scheduling In Go \: Part I - OS Scheduler
 date: '2020-03-23T00:46:00.000Z'
 ---
 
