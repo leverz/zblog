@@ -126,3 +126,4 @@
 
 [「译」Scheduling In Go : Part II - Go Scheduler](./content/blog/golang/go_schedule.md)
 
+[「译」Scheduling In Go : Part III - Concurrency](./content/blog/golang/concurrency.md)
