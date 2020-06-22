@@ -13,6 +13,7 @@
 |301|[删除无效的括号](https://leetcode-cn.com/problems/remove-invalid-parentheses/) | [Golang](./content/blog/algorithm/301.md) |
 |297|[二叉树的序列化与反序列化](https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/)  | [Golang](./content/blog/algorithm/297.md)|
 |99|[恢复二叉搜索树](https://leetcode-cn.com/problems/recover-binary-search-tree/)| [Golang](./content/blog/algorithm/99.md)|
+|36|[搜索插入位置](https://leetcode-cn.com/problems/valid-sudoku/)| [Golang](./content/blog/algorithm/36.md)|
 |35|[搜索插入位置](https://leetcode-cn.com/problems/search-insert-position/)| [Golang](./content/blog/algorithm/35.md)|
 |34|[在排序数组中查找元素的第一个和最后一个位置](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/)| [Golang](./content/blog/algorithm/34.md)|
 |33|[搜索旋转排序数组](https://leetcode-cn.com/problems/search-in-rotated-sorted-array/)| [Golang](./content/blog/algorithm/33.md)|
