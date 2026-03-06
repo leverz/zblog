@@ -4,6 +4,8 @@ import { Link, graphql } from 'gatsby'
 import Bio from '../components/Bio'
 import Layout from '../components/Layout'
 import SEO from '../components/seo'
+import GlitchText from '../components/GlitchText'
+import TerminalCard from '../components/TerminalCard'
 import { rhythm, scale } from '../utils/typography'
 
 class BlogPostTemplate extends React.Component {
@@ -15,49 +17,74 @@ class BlogPostTemplate extends React.Component {
     return (
       <Layout location={this.props.location} title={siteTitle}>
         <SEO title={post.frontmatter.title} description={post.excerpt} />
-        <h1>{post.frontmatter.title}</h1>
-        <p
-          style={{
-            ...scale(-1 / 5),
-            display: `block`,
-            marginBottom: rhythm(1),
-            marginTop: rhythm(-1),
-          }}
-        >
-          {post.frontmatter.date}
-        </p>
-        <div dangerouslySetInnerHTML={{ __html: post.html }} />
-        <hr
-          style={{
-            marginBottom: rhythm(1),
-          }}
-        />
-        <Bio />
+        
+        <article>
+          <header>
+            <h1 className="cyberpunk-article-title">
+              <GlitchText text={post.frontmatter.title} />
+            </h1>
+            <small className="cyberpunk-article-date">
+              {post.frontmatter.date}
+            </small>
+          </header>
 
-        <ul
-          style={{
-            display: `flex`,
-            flexWrap: `wrap`,
-            justifyContent: `space-between`,
-            listStyle: `none`,
-            padding: 0,
-          }}
-        >
-          <li>
-            {previous && (
-              <Link to={previous.fields.slug} rel="prev">
-                ← {previous.frontmatter.title}
-              </Link>
-            )}
-          </li>
-          <li>
-            {next && (
-              <Link to={next.fields.slug} rel="next">
-                {next.frontmatter.title} →
-              </Link>
-            )}
-          </li>
-        </ul>
+          <TerminalCard title="DATA.DECODED">
+            <section 
+              className="cyberpunk-content"
+              dangerouslySetInnerHTML={{ __html: post.html }} 
+            />
+          </TerminalCard>
+
+          <div className="cyberpunk-divider" />
+          
+          <Bio />
+
+          <nav className="cyberpunk-nav">
+            <div>
+              {previous && (
+                <Link 
+                  to={previous.fields.slug} 
+                  rel="prev"
+                  className="nav-prev"
+                >
+                  <span>←</span>
+                  <span>
+                    <span style={{ 
+                      display: 'block', 
+                      fontSize: '10px', 
+                      color: 'var(--text-secondary)',
+                      marginBottom: '2px'
+                    }}>
+                      PREVIOUS
+                    </span>
+                    {previous.frontmatter.title}
+                  </span>
+                </Link>
+              )}
+            </div>
+            <div>
+              {next && (
+                <Link 
+                  to={next.fields.slug} 
+                  rel="next"
+                >
+                  <span>
+                    <span style={{ 
+                      display: 'block', 
+                      fontSize: '10px', 
+                      color: 'var(--text-secondary)',
+                      marginBottom: '2px'
+                    }}>
+                      NEXT
+                    </span>
+                    {next.frontmatter.title}
+                  </span>
+                  <span>→</span>
+                </Link>
+              )}
+            </div>
+          </nav>
+        </article>
       </Layout>
     )
   }
@@ -79,7 +106,7 @@ export const pageQuery = graphql`
       html
       frontmatter {
         title
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "YYYY.MM.DD HH:mm")
       }
     }
   }

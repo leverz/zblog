@@ -50,6 +50,15 @@ function SEO({ description, lang, meta, keywords, title }) {
                 name: `twitter:description`,
                 content: metaDescription,
               },
+              // 主题颜色
+              {
+                name: `theme-color`,
+                content: `#0a0a0f`,
+              },
+              {
+                name: `msapplication-TileColor`,
+                content: `#0a0a0f`,
+              },
             ]
               .concat(
                 keywords.length > 0
@@ -60,7 +69,22 @@ function SEO({ description, lang, meta, keywords, title }) {
                   : []
               )
               .concat(meta)}
-          />
+          >
+            {/* 加载 Google Fonts - Share Tech Mono */}
+            <link
+              rel="preconnect"
+              href="https://fonts.googleapis.com"
+            />
+            <link
+              rel="preconnect"
+              href="https://fonts.gstatic.com"
+              crossOrigin="anonymous"
+            />
+            <link
+              href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+              rel="stylesheet"
+            />
+          </Helmet>
         )
       }}
     />
@@ -68,7 +92,7 @@ function SEO({ description, lang, meta, keywords, title }) {
 }
 
 SEO.defaultProps = {
-  lang: `en`,
+  lang: `zh-CN`,
   meta: [],
   keywords: [],
 }

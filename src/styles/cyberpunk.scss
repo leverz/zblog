@@ -1,0 +1,979 @@
+// ========================================
+// 赛博朋克主题样式 - Cyberpunk Theme
+// ========================================
+
+// 变量定义
+:root {
+  --neon-cyan: #00f3ff;
+  --neon-pink: #ff00ff;
+  --neon-purple: #b300ff;
+  --neon-green: #00ff41;
+  --neon-yellow: #ffff00;
+  --neon-red: #ff003c;
+  --dark-bg: #0a0a0f;
+  --dark-bg-secondary: #12121a;
+  --dark-bg-tertiary: #1a1a24;
+  --text-primary: #e0e0e0;
+  --text-secondary: #8b8b9a;
+  --grid-color: rgba(0, 243, 255, 0.03);
+}
+
+// 全局样式
+.cyberpunk-theme {
+  background-color: var(--dark-bg);
+  color: var(--text-primary);
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+
+  // 网格背景
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // 扫描线效果
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      rgba(0, 243, 255, 0.02) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 1000;
+    animation: scanline 8s linear infinite;
+  }
+}
+
+// 扫描线动画
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+// 故障效果动画
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-1 {
+  0%, 100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  20% {
+    clip-path: inset(20% 0 30% 0);
+    transform: translate(-3px, 0);
+  }
+  40% {
+    clip-path: inset(50% 0 20% 0);
+    transform: translate(3px, 0);
+  }
+  60% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(-3px, 0);
+  }
+  80% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(3px, 0);
+  }
+}
+
+@keyframes glitch-2 {
+  0%, 100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  20% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(3px, 0);
+  }
+  40% {
+    clip-path: inset(30% 0 40% 0);
+    transform: translate(-3px, 0);
+  }
+  60% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(3px, 0);
+  }
+  80% {
+    clip-path: inset(40% 0 30% 0);
+    transform: translate(-3px, 0);
+  }
+}
+
+@keyframes flicker {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  52% {
+    opacity: 0.4;
+  }
+  53% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.5;
+  }
+  94% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan), 0 0 15px var(--neon-cyan);
+  }
+  50% {
+    box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 30px var(--neon-cyan);
+  }
+}
+
+@keyframes border-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: var(--neon-cyan);
+  }
+}
+
+// 故障文字组件
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  color: var(--text-primary);
+  font-weight: bold;
+  letter-spacing: 2px;
+
+  &::before,
+  &::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &::before {
+    color: var(--neon-pink);
+    animation: glitch-1 2s infinite linear alternate-reverse;
+    z-index: -1;
+  }
+
+  &::after {
+    color: var(--neon-cyan);
+    animation: glitch-2 2s infinite linear alternate-reverse;
+    z-index: -2;
+  }
+
+  &:hover {
+    animation: flicker 0.5s infinite;
+  }
+}
+
+// 霓虹按钮
+.neon-button {
+  position: relative;
+  display: inline-block;
+  padding: 12px 30px;
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  text-decoration: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 243, 255, 0.4),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    background: rgba(0, 243, 255, 0.1);
+    box-shadow: 
+      0 0 10px var(--neon-cyan),
+      inset 0 0 10px var(--neon-cyan);
+    text-shadow: 0 0 5px var(--neon-cyan);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// 霓虹按钮变体 - 粉色
+.neon-button--pink {
+  border-color: var(--neon-pink);
+  color: var(--neon-pink);
+
+  &::before {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 0, 255, 0.4),
+      transparent
+    );
+  }
+
+  &:hover {
+    background: rgba(255, 0, 255, 0.1);
+    box-shadow: 
+      0 0 10px var(--neon-pink),
+      inset 0 0 10px var(--neon-pink);
+    text-shadow: 0 0 5px var(--neon-pink);
+  }
+}
+
+// 霓虹按钮变体 - 绿色
+.neon-button--green {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+
+  &::before {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 255, 65, 0.4),
+      transparent
+    );
+  }
+
+  &:hover {
+    background: rgba(0, 255, 65, 0.1);
+    box-shadow: 
+      0 0 10px var(--neon-green),
+      inset 0 0 10px var(--neon-green);
+    text-shadow: 0 0 5px var(--neon-green);
+  }
+}
+
+// 终端卡片
+.terminal-card {
+  position: relative;
+  background: var(--dark-bg-secondary);
+  border: 1px solid var(--neon-cyan);
+  padding: 20px;
+  margin: 20px 0;
+  overflow: hidden;
+
+  &::before {
+    content: '> SYSTEM.READY';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 5px 10px;
+    background: rgba(0, 243, 255, 0.1);
+    color: var(--neon-cyan);
+    font-size: 10px;
+    letter-spacing: 2px;
+    border-bottom: 1px solid var(--neon-cyan);
+  }
+
+  &:hover {
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+  }
+}
+
+.terminal-card--pink {
+  border-color: var(--neon-pink);
+
+  &::before {
+    content: '> DATA.LOADED';
+    background: rgba(255, 0, 255, 0.1);
+    color: var(--neon-pink);
+    border-bottom-color: var(--neon-pink);
+  }
+
+  &:hover {
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+  }
+}
+
+// 角标装饰
+.corner-decoration {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--neon-cyan);
+  transition: all 0.3s ease;
+
+  &.corner--tl {
+    top: -1px;
+    left: -1px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  &.corner--tr {
+    top: -1px;
+    right: -1px;
+    border-left: none;
+    border-bottom: none;
+  }
+
+  &.corner--bl {
+    bottom: -1px;
+    left: -1px;
+    border-right: none;
+    border-top: none;
+  }
+
+  &.corner--br {
+    bottom: -1px;
+    right: -1px;
+    border-left: none;
+    border-top: none;
+  }
+}
+
+// 链接样式
+.cyberpunk-link {
+  position: relative;
+  color: var(--neon-cyan);
+  text-decoration: none;
+  padding: 2px 0;
+  transition: all 0.3s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 5px var(--neon-cyan);
+    transition: width 0.3s ease;
+  }
+
+  &:hover {
+    color: var(--neon-pink);
+    text-shadow: 0 0 5px var(--neon-pink);
+
+    &::after {
+      width: 100%;
+      background: var(--neon-pink);
+      box-shadow: 0 0 5px var(--neon-pink);
+    }
+  }
+}
+
+// 分隔线
+.cyberpunk-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--neon-cyan),
+    var(--neon-pink),
+    transparent
+  );
+  margin: 30px 0;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--dark-bg);
+    border: 2px solid var(--neon-cyan);
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  &::before {
+    left: 20%;
+  }
+
+  &::after {
+    right: 20%;
+    border-color: var(--neon-pink);
+  }
+}
+
+// 代码块样式
+.cyberpunk-code {
+  background: var(--dark-bg-tertiary);
+  border: 1px solid var(--neon-green);
+  border-left: 4px solid var(--neon-green);
+  padding: 15px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  overflow-x: auto;
+  position: relative;
+
+  &::before {
+    content: '>_';
+    color: var(--neon-green);
+    margin-right: 10px;
+  }
+}
+
+// 状态标签
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1px solid;
+  margin-left: 10px;
+
+  &.status--online {
+    color: var(--neon-green);
+    border-color: var(--neon-green);
+    animation: pulse-glow 2s infinite;
+  }
+
+  &.status--warning {
+    color: var(--neon-yellow);
+    border-color: var(--neon-yellow);
+  }
+
+  &.status--danger {
+    color: var(--neon-red);
+    border-color: var(--neon-red);
+  }
+}
+
+// 文章列表项
+.cyberpunk-post-item {
+  position: relative;
+  padding: 20px;
+  margin: 20px 0;
+  background: var(--dark-bg-secondary);
+  border-left: 3px solid transparent;
+  transition: all 0.3s ease;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      var(--neon-cyan),
+      var(--neon-pink)
+    );
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background: var(--dark-bg-tertiary);
+    transform: translateX(5px);
+
+    &::before {
+      transform: scaleY(1);
+    }
+
+    .post-title {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px var(--neon-cyan);
+    }
+  }
+}
+
+.post-title {
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.post-date {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+
+  &::before {
+    content: '[ ';
+    color: var(--neon-pink);
+  }
+
+  &::after {
+    content: ' ]';
+    color: var(--neon-pink);
+  }
+}
+
+.post-excerpt {
+  color: var(--text-secondary);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+// 页脚样式
+.cyberpunk-footer {
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(0, 243, 255, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+
+  h4 {
+    color: var(--neon-cyan);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+
+    &::after {
+      content: '_';
+      animation: blink-caret 1s infinite;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin: 8px 0;
+  }
+
+  a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      color: var(--neon-pink);
+      text-shadow: 0 0 5px var(--neon-pink);
+      transform: translateX(5px);
+    }
+
+    svg {
+      fill: currentColor;
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// 头像效果
+.cyberpunk-avatar {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--neon-cyan);
+  box-shadow: 
+    0 0 10px var(--neon-cyan),
+    inset 0 0 10px var(--neon-cyan);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 243, 255, 0.1) 2px,
+      rgba(0, 243, 255, 0.1) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.1) saturate(1.2);
+  }
+}
+
+// Bio 区域
+.cyberpunk-bio {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px;
+  background: var(--dark-bg-secondary);
+  border: 1px solid rgba(0, 243, 255, 0.2);
+  position: relative;
+  margin: 30px 0;
+
+  .bio-content {
+    flex: 1;
+  }
+
+  .bio-title {
+    color: var(--neon-cyan);
+    font-size: 1rem;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+
+  .bio-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .corner-decoration {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: var(--neon-cyan);
+  }
+}
+
+// 文章页标题
+.cyberpunk-article-title {
+  font-size: 2rem;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  position: relative;
+  padding-bottom: 15px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--neon-cyan),
+      var(--neon-pink),
+      transparent
+    );
+  }
+}
+
+.cyberpunk-article-date {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+  display: block;
+
+  &::before {
+    content: '◢ ';
+    color: var(--neon-pink);
+  }
+}
+
+// 文章内容
+.cyberpunk-content {
+  h2, h3, h4 {
+    color: var(--neon-cyan);
+    margin-top: 40px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 15px;
+
+    &::before {
+      content: '>';
+      position: absolute;
+      left: 0;
+      color: var(--neon-pink);
+    }
+  }
+
+  p {
+    color: var(--text-primary);
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  a {
+    color: var(--neon-cyan);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--neon-cyan);
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: var(--neon-pink);
+      border-bottom-color: var(--neon-pink);
+      text-shadow: 0 0 5px var(--neon-pink);
+    }
+  }
+
+  code {
+    background: var(--dark-bg-tertiary);
+    color: var(--neon-green);
+    padding: 2px 6px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9em;
+    border: 1px solid rgba(0, 255, 65, 0.3);
+  }
+
+  pre {
+    background: var(--dark-bg-tertiary);
+    border: 1px solid var(--neon-green);
+    border-left: 4px solid var(--neon-green);
+    padding: 20px;
+    overflow-x: auto;
+    margin: 20px 0;
+
+    code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text-primary);
+    }
+  }
+
+  blockquote {
+    border-left: 4px solid var(--neon-pink);
+    margin: 20px 0;
+    padding: 10px 20px;
+    background: rgba(255, 0, 255, 0.05);
+    font-style: italic;
+
+    p {
+      margin: 0;
+      color: var(--text-secondary);
+    }
+  }
+
+  ul, ol {
+    padding-left: 25px;
+    margin-bottom: 20px;
+  }
+
+  li {
+    color: var(--text-primary);
+    margin: 8px 0;
+    position: relative;
+  }
+
+  ul li::marker {
+    color: var(--neon-cyan);
+  }
+
+  img {
+    max-width: 100%;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+  }
+}
+
+// 导航链接
+.cyberpunk-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 243, 255, 0.2);
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    color: var(--neon-cyan);
+    text-decoration: none;
+    border: 1px solid var(--neon-cyan);
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+
+    &:hover {
+      background: rgba(0, 243, 255, 0.1);
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+      transform: translateX(5px);
+    }
+
+    &.nav-prev:hover {
+      transform: translateX(-5px);
+    }
+  }
+}
+
+// 自定义光标
+.cyberpunk-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--neon-cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s ease, border-color 0.3s ease;
+  mix-blend-mode: difference;
+
+  &.cursor-hover {
+    transform: scale(1.5);
+    border-color: var(--neon-pink);
+    background: rgba(255, 0, 255, 0.1);
+  }
+}
+
+.cyberpunk-cursor-dot {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: var(--neon-cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+// 滚动条
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neon-cyan);
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--neon-pink);
+  }
+}
+
+// 选择文本
+::selection {
+  background: var(--neon-pink);
+  color: var(--dark-bg);
+}
+
+// 响应式
+@media (max-width: 768px) {
+  .cyberpunk-theme {
+    &::before {
+      background-size: 30px 30px;
+    }
+  }
+
+  .cyberpunk-bio {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cyberpunk-footer {
+    flex-direction: column;
+  }
+
+  .cyberpunk-nav {
+    flex-direction: column;
+    gap: 10px;
+
+    a {
+      justify-content: center;
+    }
+  }
+}

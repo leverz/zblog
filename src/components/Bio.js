@@ -1,61 +1,49 @@
 import React from 'react'
-import { StaticQuery, graphql } from 'gatsby'
-import Image from 'gatsby-image'
 
 import { rhythm } from '../utils/typography'
+import GlitchText from './GlitchText'
 
+// 直接使用静态头像路径
 function Bio() {
   return (
-    <StaticQuery
-      query={bioQuery}
-      render={data => {
-        const { author, social } = data.site.siteMetadata
-        return (
-          <div
-            style={{
-              display: `flex`,
-              marginBottom: rhythm(2.5),
-            }}
-          >
-            <Image
-              fixed={data.avatar.childImageSharp.fixed}
-              alt={author}
-              style={{
-                marginRight: rhythm(1 / 2),
-                marginBottom: 0,
-                minWidth: 50,
-                borderRadius: `100%`,
-              }}
-            />
-            <p>
-              痕迹 <br/>
-              没有过去，就没法认定现在的自己 <br/>
-            </p>
-          </div>
-        )
-      }}
-    />
+    <div className="cyberpunk-bio">
+      <div className="corner-decoration corner--tl" />
+      <div className="corner-decoration corner--tr" />
+      <div className="corner-decoration corner--bl" />
+      <div className="corner-decoration corner--br" />
+      
+      <div className="cyberpunk-avatar">
+        <img
+          src="/profile-pic.jpg"
+          alt="Lever"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+          onError={(e) => {
+            // 如果图片加载失败，显示默认占位
+            e.target.style.display = 'none';
+            e.target.parentElement.style.background = 'var(--neon-cyan)';
+            e.target.parentElement.style.display = 'flex';
+            e.target.parentElement.style.alignItems = 'center';
+            e.target.parentElement.style.justifyContent = 'center';
+            e.target.parentElement.innerHTML = '<span style="color: var(--dark-bg); font-weight: bold; font-size: 24px;">L</span>';
+          }}
+        />
+      </div>
+      
+      <div className="bio-content">
+        <div className="bio-title">
+          <GlitchText text="IDENTITY //" />
+        </div>
+        <p className="bio-text">
+          痕迹<br/>
+          没有过去，就没法认定现在的自己
+        </p>
+      </div>
+    </div>
   )
 }
-
-const bioQuery = graphql`
-  query BioQuery {
-    avatar: file(absolutePath: { regex: "/profile-pic.jpg/" }) {
-      childImageSharp {
-        fixed(width: 50, height: 50) {
-          ...GatsbyImageSharpFixed
-        }
-      }
-    }
-    site {
-      siteMetadata {
-        author
-        social {
-          twitter
-        }
-      }
-    }
-  }
-`
 
 export default Bio
