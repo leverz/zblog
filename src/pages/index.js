@@ -8,11 +8,36 @@ import GlitchText from '../components/GlitchText'
 import TerminalCard from '../components/TerminalCard'
 import { rhythm } from '../utils/typography'
 
+const INITIAL_POSTS = 10
+const LOAD_MORE_STEP = 10
+
 class BlogIndex extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      visibleCount: INITIAL_POSTS,
+    }
+    this.handleLoadMore = this.handleLoadMore.bind(this)
+  }
+
+  handleLoadMore() {
+    const { data } = this.props
+    const posts = data.allMarkdownRemark.edges
+    this.setState(prevState => ({
+      visibleCount: Math.min(
+        prevState.visibleCount + LOAD_MORE_STEP,
+        posts.length
+      ),
+    }))
+  }
+
   render() {
     const { data } = this.props
     const siteTitle = data.site.siteMetadata.title
     const posts = data.allMarkdownRemark.edges
+    const { visibleCount } = this.state
+    const visiblePosts = posts.slice(0, visibleCount)
+    const hasMore = visibleCount < posts.length
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
@@ -29,10 +54,10 @@ class BlogIndex extends React.Component {
             marginBottom: '15px',
             fontFamily: "'Share Tech Mono', monospace"
           }}>
-            {'>'} LOADING ARCHIVES... [{posts.length}] ENTRIES FOUND
+            {'>'} LOADING ARCHIVES... [{visiblePosts.length}/{posts.length}] ENTRIES FOUND
           </div>
           
-          {posts.map(({ node }, index) => {
+          {visiblePosts.map(({ node }, index) => {
             const title = node.frontmatter.title || node.fields.slug
             const postNumber = String(posts.length - index).padStart(3, '0')
             
@@ -64,6 +89,18 @@ class BlogIndex extends React.Component {
               </div>
             )
           })}
+          
+          {hasMore && (
+            <div style={{ textAlign: 'center', marginTop: '30px' }}>
+              <button
+                type="button"
+                className="neon-button"
+                onClick={this.handleLoadMore}
+              >
+                LOAD MORE [{posts.length - visibleCount} REMAINING]
+              </button>
+            </div>
+          )}
         </TerminalCard>
       </Layout>
     )
@@ -79,7 +116,7 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMarkdownRemark(sort: { frontmatter: { date: DESC } }) {
       edges {
         node {
           excerpt

@@ -49,7 +49,6 @@ class Layout extends React.Component {
             className="cyberpunk-link"
           >
             <GlitchText text={title} />
-            <span className="status-badge status--online">ONLINE</span>
           </Link>
         </h1>
       )
@@ -98,9 +97,9 @@ class Layout extends React.Component {
             <FooterItem title="SYSTEM">
               <li>Lever&apos;s Castle v2.0.77</li>
               <li>
-                <a href="mailto:zheng@lever.wang">
+                <a href="mailto:levkingpop@gmail.com">
                   <span>◢</span>
-                  zheng@lever.wang
+                  levkingpop@gmail.com
                 </a>
               </li>
             </FooterItem>
